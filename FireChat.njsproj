@@ -29,10 +29,28 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="app.ts" />
+    <Content Include=".eslintrc.js" />
+    <Content Include=".gitignore" />
+    <Content Include="LICENSE" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Content Include="src\pages\assets\img\logo-large.png" />
+    <Content Include="src\pages\assets\img\logo-small.png" />
+    <Content Include="src\pages\index.html" />
+    <Content Include="src\pages\splash.html" />
     <Content Include="tsconfig.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include=".vs\" />
+    <Folder Include=".vs\FireChat\" />
+    <Folder Include=".vs\FireChat\v16\" />
+    <Folder Include="src\" />
+    <Folder Include="src\pages\" />
+    <Folder Include="src\pages\assets\" />
+    <Folder Include="src\pages\assets\img\" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="src\app.ts" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
   <ProjectExtensions>
