@@ -1,0 +1,34 @@
+{
+  "name": "fire-chat",
+  "version": "0.0.0",
+  "description": "FireChat",
+  "main": "app.ts",
+  "author": {
+    "name": "PlutonusDev"
+  },
+  "scripts": {
+    "start": "npm run lintfix && npm run build && npm run package && electron ./dist/app.js",
+    "startNoBuild": "npm run package && electron ./dist/app.js",
+    "package": "cp -r ./src/pages/ ./dist/public/",
+
+    "build": "tsc --build",
+    "clean": "tsc --clean",
+
+    "lint": "eslint . --ext .ts,.tsx",
+    "lintfix": "eslint . --ext .ts,.tsx --fix"
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.14",
+    "@typescript-eslint/eslint-plugin": "^2.0.0",
+    "@typescript-eslint/parser": "^2.0.0",
+    "eslint": "^6.1.0",
+    "eslint-config-standard": "^13.0.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-standard": "^4.0.0",
+    "typescript": "^3.2.2",
+    "electron": "^6.0.2"
+  }
+}
