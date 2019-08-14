@@ -1,68 +1,85 @@
-'use strict'
+'use strict';
 
-import * as electron from 'electron'
-const app = electron.app
-const Window = electron.BrowserWindow
+import {promisify} from 'util';
+const sleep = promisify(setTimeout);
 
-const pageBase = `file://${__dirname}/public/`
+import * as electron from 'electron';
+const app = electron.app;
+const Window = electron.BrowserWindow;
 
-let mainWindow; let splashWindow
+const pageBase = `file://${__dirname}/public/`;
 
-function createWindow (): void {
-  mainWindow = new Window({ width: 1000, height: 700, show: false })
-  mainWindow.setMenu(null)
-  mainWindow.loadURL(`${pageBase}index.html`)
+let mainWindow; let splashWindow;
 
-  mainWindow.webContents.on('did-finish-load', () => {
-    setTimeout(() => {
-      mainWindow.show()
+/**
+ * Create the Main Window
+ * @return {void}
+ */
+const createWindow = (): void => {
+    mainWindow = new Window({width: 1000, height: 700, show: false});
+    mainWindow.setMenu(null);
+    mainWindow.loadURL(`${pageBase}index.html`);
 
-      if (splashWindow) {
-        const splashWindowBounds = splashWindow.getBounds()
-        mainWindow.setBounds(splashWindowBounds)
-        mainWindow.maximize()
-        splashWindow.close()
-      }
-    }, 3000)
-  })
+    mainWindow.webContents.on('did-finish-load', () => {
+        sleep(3000).then(() => {
+            mainWindow.show();
 
-  mainWindow.on('closed', () => {
-    mainWindow = null
-  })
-}
+            if (splashWindow) {
+                const splashWindowBounds = splashWindow.getBounds();
+                mainWindow.setBounds(splashWindowBounds);
+                mainWindow.maximize();
+                splashWindow.close();
+            }
+        });
+    });
 
-function createSplash (): void {
-  splashWindow = new Window({ width: 400, height: 100, parent: mainWindow, frame: false, show: false })
-  splashWindow.loadURL(`${pageBase}splash.html`)
-  splashWindow.on('closed', () => {
-    splashWindow = null
-  })
-  splashWindow.webContents.on('did-finish-load', () => splashWindow.show())
-}
+    mainWindow.on('closed', () => {
+        mainWindow = null;
+    });
+};
+
+/**
+ * Create the Splash Window
+ * @return {void}
+ */
+const createSplash = (): void => {
+    splashWindow = new Window({
+        width: 350,
+        height: 100,
+        parent: mainWindow,
+        frame: false,
+        show: false,
+    });
+    splashWindow.loadURL(`${pageBase}splash.html`);
+    splashWindow.on('closed', () => {
+        splashWindow = null;
+    });
+    splashWindow.webContents.on('did-finish-load', () => splashWindow.show());
+};
 
 app.on('ready', () => {
-  createSplash()
-  createWindow()
-})
+    createSplash();
+    createWindow();
+});
 
 app.on('second-instance', () => {
-  if (mainWindow) {
-    if (mainWindow.isMinimized()) {
-      return mainWindow.restore()
+    if (mainWindow) {
+        if (mainWindow.isMinimized()) {
+            return mainWindow.restore();
+        }
+        if (splashWindow.isMinimized()) {
+            return splashWindow.restore();
+        }
+        return mainWindow.show();
     }
-    if (splashWindow.isMinimized()) {
-      return splashWindow.restore()
-    }
-    return mainWindow.show()
-  }
-})
+});
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit()
-})
+    if (process.platform !== 'darwin') app.quit();
+});
 
 app.on('activate', () => {
-  if (mainWindow === null) {
-    createWindow()
-  }
-})
+    if (mainWindow === null) {
+        createWindow();
+    }
+});

@@ -5,9 +5,9 @@
         node: true
     },
     extends: [
-        'standard',
         'eslint:recommended',
-        'plugin:@typescript-eslint/recommended'
+		'plugin:@typescript-eslint/recommended',
+		'google'
     ],
     globals: {
         Atomics: 'readonly',
@@ -23,5 +23,6 @@
         '@typescript-eslint'
     ],
     rules: {
+		"indent": [2,4]
     }
 }
